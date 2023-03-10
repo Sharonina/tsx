@@ -1,9 +1,10 @@
-const random = () => Math.floor(Math.random() * 123) + 1;
+interface Props {
+  image: string;
+  alt: string;
+}
 
 //hay que dejar explícito que es un componente de react
-export const RandomFox = (): JSX.Element => {
-  const image: string = `https://randomFox.ca/images/${random()}.jpg`;
-
+export const RandomFox = ({ image, alt }: Props): JSX.Element => {
   return (
     <img
       width={320}
