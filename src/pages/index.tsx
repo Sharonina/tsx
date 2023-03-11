@@ -5,11 +5,16 @@ import { RandomFox } from "../components/RandomFox";
 
 const random = () => Math.floor(Math.random() * 123) + 1;
 
+//generate unique id
+const generateId = () => Math.random().toString(36).substring(2, 9);
+
+type ImageItems = { id: string; url: string };
+
 const Home: NextPage = () => {
-  const [images, setImages] = useState<Array<string>>([
-    `https://randomfox.ca/images/${random()}.jpg`,
-    `https://randomfox.ca/images/${random()}.jpg`,
-    `https://randomfox.ca/images/${random()}.jpg`,
+  const [images, setImages] = useState<Array<ImageItems>>([
+    { id: generateId(), url: `https://randomfox.ca/images/${random()}.jpg` },
+    { id: generateId(), url: `https://randomfox.ca/images/${random()}.jpg` },
+    { id: generateId(), url: `https://randomfox.ca/images/${random()}.jpg` },
   ]);
   return (
     <div>
@@ -20,9 +25,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        {images.map((image, index) => (
-          <div className="p-4" key={index}>
-            <RandomFox image={image} />
+        {images.map(({ id, url }) => (
+          <div className="p-4" key={id}>
+            <RandomFox image={url} alt={"random fox image"} />
           </div>
         ))}
       </main>
