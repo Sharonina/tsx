@@ -1,15 +1,20 @@
 import { useEffect, useRef, useState } from "react";
+import type { ImgHTMLAttributes } from "react";
 
-interface Props {
-  image: string;
+interface LazyImageProps {
+  src: string;
   alt: string;
 }
 
+type ImageNativeTypes = ImgHTMLAttributes<HTMLImageElement>;
+
+type Props = LazyImageProps & ImageNativeTypes;
+
 //hay que dejar explícito que es un componente de react
-export const RandomFox = ({ image, alt }: Props): JSX.Element => {
+export const LazyImage = ({ src, alt, ...ImgProps }: Props): JSX.Element => {
   const node = useRef<HTMLImageElement>(null); // se debe poner el elemento con el que se va a trabajar e inicializar en null cuando no sabemos el tipo
 
-  const [src, setSrc] = useState(
+  const [currentSrc, setCurrentSrc] = useState(
     "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
   );
 
@@ -19,7 +24,7 @@ export const RandomFox = ({ image, alt }: Props): JSX.Element => {
       entries.forEach((entry) => {
         //on intersection > console.log
         if (entry.isIntersecting) {
-          setSrc(image);
+          setCurrentSrc(src);
         }
       });
     });
@@ -33,16 +38,7 @@ export const RandomFox = ({ image, alt }: Props): JSX.Element => {
     return () => {
       observer.disconnect();
     };
-  }, [image]);
+  }, [src]);
 
-  return (
-    <img
-      ref={node}
-      width={320}
-      height="auto"
-      className="mx-auto rounded-md bg-gray-300"
-      src={src}
-      alt={alt}
-    />
-  );
+  return <img ref={node} src={src} alt={alt} {...ImgProps} />;
 };
