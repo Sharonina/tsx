@@ -2,22 +2,23 @@ import { useState } from "react";
 import type { MouseEventHandler } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { random } from "lodash";
 import { LazyImage } from "../components/RandomFox";
 
-const random = () => Math.floor(Math.random() * 123) + 1;
+const myRandom = () => random(1, 123);
 
 //generate unique id
 const generateId = () => Math.random().toString(36).substring(2, 9);
 
-type ImageItems = { id: string; url: string };
+/* type ImageItems = { id: string; url: string }; */
 
 const Home: NextPage = () => {
-  const [images, setImages] = useState<Array<ImageItems>>([]);
+  const [images, setImages] = useState<Array<IFoxImageItem>>([]);
 
   const addNewFox: MouseEventHandler<HTMLButtonElement> = () => {
-    const newImage = {
+    const newImage: IFoxImageItem = {
       id: generateId(),
-      url: `https://randomfox.ca/images/${random()}.jpg`,
+      url: `https://randomfox.ca/images/${myRandom()}.jpg`,
     };
 
     setImages([...images, newImage]);
